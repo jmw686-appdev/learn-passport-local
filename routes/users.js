@@ -36,13 +36,17 @@ router.get('/signup', function(req, res){
 });
 
 router.post('/signup', function(req, res){
-  const user = new User({
-		username: req.body.username,
-		password: req.body.password
-	});
-  user.save().then(result => {
-    console.log(result);
-  }).catch(err => console.log(err));
+  let newUser = new User({
+    username: req.body.username,
+    password: req.body.password
+  });
+
+  User.createUser(newUser, function(err, user){
+    console.log('callback: ' + user.username);
+  });
+  // user.save().then(result => {
+  //   console.log(result);
+  // }).catch(err => console.log(err));
 	res.redirect('/');
 });
 module.exports = router;
