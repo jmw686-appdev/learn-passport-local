@@ -1,6 +1,8 @@
 require('dotenv').config();
 var createError = require('http-errors');
-var express = require('express');
+var express = require('express'),
+  passport = require('passport'),
+  session = require('express-session');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
@@ -34,6 +36,13 @@ app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
+app.use(session({
+  secret: 'keyboard cat',
+   cookie: {},
+    saveUninitialized: true, resave: false
+  }));
+app.use(passport.initialize());
+app.use(passport.session());
 app.use(express.static(path.join(__dirname, 'public')));
 app.locals.basedir = app.get('views');
 

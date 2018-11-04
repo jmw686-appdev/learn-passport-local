@@ -12,9 +12,17 @@ router.get('/', function(req, res, next) {
 
 // Login
 router.get('/login', function(req, res){
+  if (req.user) {
+    res.redirect('/users/'); //+ req.user.username)
+  }
 	res.render('users/login');
 });
 
+router.post('/login',
+  passport.authenticate('local', {
+    successRedirect: '/users/',
+    failureRedirect: '/users/login'
+  }));
 // Login
 router.get('/signup', function(req, res){
 	res.render('users/signup');
