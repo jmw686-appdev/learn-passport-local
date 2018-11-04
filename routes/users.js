@@ -1,6 +1,7 @@
 var express = require('express');
 var router = express.Router();
-
+require('../passport');
+var passport = require('passport');
 const User = require('../models/user');
 
 /* GET users listing. */
@@ -23,7 +24,13 @@ router.post('/login',
     successRedirect: '/users/',
     failureRedirect: '/users/login'
   }));
-// Login
+
+// logout
+router.get('/logout', function(req, res){
+  req.logout();
+  res.redirect('/');
+});
+
 router.get('/signup', function(req, res){
 	res.render('users/signup');
 });
