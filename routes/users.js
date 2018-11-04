@@ -5,7 +5,9 @@ const User = require('../models/user');
 
 /* GET users listing. */
 router.get('/', function(req, res, next) {
-  res.render('users/index', {users: User.find({})});
+  User.find({}, function(err, users) {
+   res.render('users/index', {users: users});
+  });
 });
 
 // Login
@@ -20,8 +22,8 @@ router.get('/signup', function(req, res){
 
 router.post('/signup', function(req, res){
   const user = new User({
-		username: username,
-		password: password
+		username: req.body.username,
+		password: req.body.password
 	});
   user.save().then(result => {
     console.log(result);

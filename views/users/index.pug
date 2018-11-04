@@ -2,5 +2,5 @@ extends /layout
 
 block content
   ul
-    each val, index in users
-      li= index + ': ' + val
+    each user in users
+      li= 'User: ' + user.username
