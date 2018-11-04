@@ -1,3 +1,4 @@
+require('dotenv').config();
 var createError = require('http-errors');
 var express = require('express');
 var path = require('path');
@@ -10,22 +11,20 @@ var usersRouter = require('./routes/users');
 
 var app = express();
 
-require('dotenv').config();
 
 // mongoose.connect('mongodb://localhost:27017/mlab-test',
 //   { useNewUrlParser: true,
 //     useCreateIndex: true
 //   });
-console.log(process.env.MLAB_USER);
-// mongoose.connect('mongodb://' + process.env.MLAB_USER + ':' + process.env.MLAB_PW + '@ds151753.mlab.com:51753/mlab-test',
-//   { useNewUrlParser: true,
-//     useCreateIndex: true
-//   });
+mongoose.connect('mongodb://' + process.env.MLAB_USER + ':' + process.env.MLAB_PW + '@ds151753.mlab.com:51753/mlab-test',
+  { useNewUrlParser: true,
+    useCreateIndex: true
+  });
 
 const db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error:'));
 db.once('open', function() {
-  // this world has been connected
+  console.log("this world has been connected");
 });
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
