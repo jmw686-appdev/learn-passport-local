@@ -3,7 +3,7 @@ const mongoose = require('mongoose'),
       bcrypt = require('bcrypt'),
       URLSlugs = require('mongoose-url-slugs');
 
-var userSchema = mongoose.Schema({
+let userSchema = mongoose.Schema({
   username: { type: String, required: true, index: { unique: true } },
   password: { type: String, required: true }
 });
@@ -33,8 +33,6 @@ userSchema.methods.hashPassword = function (candidatePassword, cb) {
     // hash the password using our new salt
     bcrypt.hash(candidatePassword, salt, function(err, hash) {
       if (err) return cb(err);
-      // override the cleartext password with the hashed one maybe?
-      // user.password = hash;
       cb(null, hash);
     });
   });

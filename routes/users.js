@@ -1,11 +1,12 @@
 const express = require('express');
 const router = express.Router();
 require('../passport');
+const connect = require('connect-ensure-login');
 const passport = require('passport');
 const User = require('../models/user');
 
 /* GET users listing. */
-router.get('/', function(req, res, next) {
+router.get('/', connect.ensureLoggedIn('/users/login'), function(req, res, next) {
   User.find({}, function(err, users) {
    res.render('users/index', {users: users});
   });
@@ -16,17 +17,20 @@ router.get('/login', function(req, res){
   if (req.user) {
     res.redirect('/users/'); //+ req.user.username)
   }
-	res.render('users/login');
+	res.render('users/login', {user: req.user});
 });
+// Why doesn't this work?
+// router.post('/login', passport.authenticate('local', { successReturnToOrRedirect: '/', failureRedirect: '/users/login' }));
 
 router.post('/login', function (req, res, next) {
   passport.authenticate('local', {
+    successReturnToOrRedirect: '/users',
     failureRedirect: '/users/login'
   }, function(err, user, info) {
     if (err) {console.log(err);}
 
     res.redirect('/users');
-  })(req, res, next);
+  })(req, res, next); //TODO this right here is the stuff I don't get
 });
 
 // logout
