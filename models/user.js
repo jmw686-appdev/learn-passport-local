@@ -3,18 +3,51 @@ const mongoose = require('mongoose'),
       bcrypt = require('bcrypt'),
       URLSlugs = require('mongoose-url-slugs');
 
-let userSchema = mongoose.Schema({
-    username: {type: String, index: true},
-    password: { type: String, default: null }
+var userSchema = mongoose.Schema({
+  username: { type: String, required: true, index: { unique: true } },
+  password: { type: String, required: true }
 });
 
 userSchema.plugin(URLSlugs('username'));
 
-module.exports = mongoose.model('User', userSchema);
 
-module.exports.comparePassword = (candidatePassword, hash, callback) =>{
-	bcrypt.compare(candidatePassword, hash, (err, isMatch) => {
-    	if(err) throw err;
-    	callback(null, isMatch);
-	});
+
+userSchema.pre('save', function(next) {
+    var user = this;
+
+    this.hashPassword(user.password, function (err, hash) {
+      if (err) return next(err);
+
+      user.password = hash;
+      next();
+    });
+    // only hash the password if it has been modified (or is new)
+    // if (!user.isModified('password')) return next();
+});
+
+//Hash Password
+userSchema.methods.hashPassword = function (candidatePassword, cb) {
+  // generate a salt
+  bcrypt.genSalt(10, function(err, salt) {
+    if (err) return cb(err);
+    // hash the password using our new salt
+    bcrypt.hash(user.password, salt, function(err, hash) {
+      if (err) return cb(err);
+      // override the cleartext password with the hashed one maybe?
+      // user.password = hash;
+      cb(null, hash);
+    });
+  });
+
 }
+
+userSchema.methods.comparePassword = function(candidatePassword, hash, cb) {
+    bcrypt.compare(candidatePassword, hash, function(err, isMatch) {
+        console.log('Inner Type: ' + typeof cb);
+        if (err) return cb(err);
+        cb(null, isMatch);
+    });
+};
+
+
+module.exports = mongoose.model('User', userSchema);
