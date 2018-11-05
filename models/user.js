@@ -31,7 +31,7 @@ userSchema.methods.hashPassword = function (candidatePassword, cb) {
   bcrypt.genSalt(10, function(err, salt) {
     if (err) return cb(err);
     // hash the password using our new salt
-    bcrypt.hash(user.password, salt, function(err, hash) {
+    bcrypt.hash(candidatePassword, salt, function(err, hash) {
       if (err) return cb(err);
       // override the cleartext password with the hashed one maybe?
       // user.password = hash;
@@ -43,7 +43,6 @@ userSchema.methods.hashPassword = function (candidatePassword, cb) {
 
 userSchema.methods.comparePassword = function(candidatePassword, hash, cb) {
     bcrypt.compare(candidatePassword, hash, function(err, isMatch) {
-        console.log('Inner Type: ' + typeof cb);
         if (err) return cb(err);
         cb(null, isMatch);
     });

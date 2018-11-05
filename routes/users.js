@@ -1,7 +1,7 @@
-var express = require('express');
-var router = express.Router();
+const express = require('express');
+const router = express.Router();
 require('../passport');
-var passport = require('passport');
+const passport = require('passport');
 const User = require('../models/user');
 
 /* GET users listing. */
@@ -22,12 +22,11 @@ router.get('/login', function(req, res){
 router.post('/login', function (req, res, next) {
   passport.authenticate('local', {
     failureRedirect: '/users/login'
-  }, (err, user, info) => {
+  }, function(err, user, info) {
     if (err) {console.log(err);}
 
-    res.redirect('/');
+    res.redirect('/users');
   })(req, res, next);
-
 });
 
 // logout
@@ -41,17 +40,13 @@ router.get('/signup', function(req, res){
 });
 
 router.post('/signup', function(req, res){
-  let newUser = new User({
+  let user = new User({
     username: req.body.username,
     password: req.body.password
   });
-
-  User.createUser(newUser, function(err, user){
-    console.log('callback: ' + user.username);
-  });
-  // user.save().then(result => {
-  //   console.log(result);
-  // }).catch(err => console.log(err));
+  user.save().then(result => {
+    console.log(result);
+  }).catch(err => console.log(err));
 	res.redirect('/');
 });
 module.exports = router;
