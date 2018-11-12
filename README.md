@@ -1,6 +1,6 @@
 # learn-passport-local
 
-A project to learn how to use passport-local with Nodejs, Express, and Mongoose 
+A project to learn how to use passport-local with Nodejs, Express, and Mongoose
 https://medium.com/@jelaniwoods/node-express-passport-local-74d9909a558a 
 
 I used mlab for this so the db won't connect right away.
