@@ -20,18 +20,18 @@ router.get('/login', function(req, res){
 	res.render('users/login', {user: req.user});
 });
 // Why doesn't this work?
-// router.post('/login', passport.authenticate('local', { successReturnToOrRedirect: '/', failureRedirect: '/users/login' }));
+router.post('/login', passport.authenticate('local', { successReturnToOrRedirect: '/', failureRedirect: '/users/login' }));
 
-router.post('/login', function (req, res, next) {
-  passport.authenticate('local', {
-    successReturnToOrRedirect: '/users',
-    failureRedirect: '/users/login'
-  }, function(err, user, info) {
-    if (err) {console.log(err);}
-
-    res.redirect('/users');
-  })(req, res, next); //TODO this right here is the stuff I don't get
-});
+  // router.post('/login', function (req, res, next) {
+  //   passport.authenticate('local', {
+  //     successReturnToOrRedirect: '/users',
+  //     failureRedirect: '/users/login'
+  //   }, function(err, user, info) {
+  //     if (err) {console.log(err);}
+  //
+  //     res.redirect('/users');
+  //   })(req, res, next); //TODO this right here is the stuff I don't get
+  // });
 
 // logout
 router.get('/logout', function(req, res){

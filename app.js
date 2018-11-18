@@ -15,14 +15,14 @@ const usersRouter = require('./routes/users');
 const app = express();
 
 
-// mongoose.connect('mongodb://localhost:27017/mlab-test',
-//   { useNewUrlParser: true,
-//     useCreateIndex: true
-//   });
-mongoose.connect('mongodb://' + process.env.MLAB_USER + ':' + process.env.MLAB_PW + '@ds151753.mlab.com:51753/mlab-test',
+mongoose.connect('mongodb://localhost:27017/mlab-test',
   { useNewUrlParser: true,
     useCreateIndex: true
   });
+// mongoose.connect('mongodb://' + process.env.MLAB_USER + ':' + process.env.MLAB_PW + '@ds151753.mlab.com:51753/mlab-test',
+//   { useNewUrlParser: true,
+//     useCreateIndex: true
+//   });
 
 const db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error:'));
